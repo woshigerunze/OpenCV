@@ -9,7 +9,7 @@
 #include "Filter.hpp"
 
 
-void Solution::salt(Mat& src,int n)
+void Solution::saltNoise(Mat& src,int n)
 {
     int i(0);
     int j(0);
@@ -29,7 +29,7 @@ void Solution::salt(Mat& src,int n)
     }
 }
 
-void Solution::pepper(Mat& src,int n)
+void Solution::pepperNoise(Mat& src,int n)
 {
     int i(0);
     int j(0);
@@ -133,4 +133,52 @@ void Solution::grayModify(Mat& src)
                  (it)[1]=((it)[0]*30+(it)[1]*59+(it)[2]*11)/100;
                  (it)[2]=((it)[0]*30+(it)[1]*59+(it)[2]*11)/100;
              });
+}
+void Solution::brightOrdarkModify(Mat& src,double ratio)
+{
+    for_each(src.begin<Vec3b>(),src.end<Vec3b>(),[&](auto& it)
+             {
+                 if(it[0]*ratio>=255)
+                     it[0]=it[0];
+                 else it[0]=it[0]*ratio;
+                 if(it[1]*ratio>=255)
+                     it[1]=it[1];
+                 else it[1]=it[1]*ratio;
+                 if(it[2]*ratio>=255)
+                     it[2]=it[2];
+                 else it[2]=it[2]*ratio;
+             });
+}
+void Solution::negative(Mat& src)
+{
+    for_each(src.begin<Vec3b>(), src.end<Vec3b>(),[](auto& it)
+             {
+                 it[0]=255-it[0];
+                 it[1]=255-it[1];
+                 it[2]=255-it[2];
+             });
+}
+Mat Solution::calcGrayHist(const Mat& src)
+{
+    int grayNum[256]={0};
+    for(int i=0;i<src.rows;i++)
+        for(int j=0;j<src.cols;j++)
+        {
+            grayNum[src.at<uchar>(i,j)]+=1;
+        }
+    Mat res(256,256,CV_8U, Scalar(255));
+    int hpt=static_cast<int>(0.9*256);
+    double maxVal=0.0;
+    for(int i=0;i<256;i++)
+    {
+        if(grayNum[i]>maxVal)
+            maxVal=grayNum[i];
+    }
+    for(int i=0;i<256;i++)
+    {
+        int binVal=grayNum[i];
+        int intensify=static_cast<int>(binVal*hpt / maxVal);
+        line(res, Point(i, 256),Point(i, 256 - intensify),Scalar::all(0));
+    }
+    return res;
 }
