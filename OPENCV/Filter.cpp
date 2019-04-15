@@ -7,7 +7,9 @@
 //
 
 #include "Filter.hpp"
-void salt(Mat& src,int n)
+
+
+void Solution::salt(Mat& src,int n)
 {
     int i(0);
     int j(0);
@@ -27,7 +29,7 @@ void salt(Mat& src,int n)
     }
 }
 
-void pepper(Mat& src,int n)
+void Solution::pepper(Mat& src,int n)
 {
     int i(0);
     int j(0);
@@ -48,20 +50,20 @@ void pepper(Mat& src,int n)
     }
 }
 
-void aveFilter(const Mat& src,Mat& dst,int size)
+void Solution::aveFilter(const Mat& src,Mat& dst,int _ksize)
 {
-    assert(size%2==1);
-    int w=size*size;
-    size=(size-1)/2;
+    assert(_ksize%2==1);
+    int w=_ksize*_ksize;
+    _ksize=(_ksize-1)/2;
     for(int i=0;i<src.rows;i++)
         for(int j=0;j<src.cols;j++)
         {
-            if((i-size)>=0&&(j-size)>=0&&(i+size)<src.rows&&(j+size)<src.cols)
+            if((i-_ksize)>=0&&(j-_ksize)>=0&&(i+_ksize)<src.rows&&(j+_ksize)<src.cols)
             {
-                int startrow(i-size);
-                int startcol(j-size);
-                int endrow(i+size);
-                int endcol(j+size);
+                int startrow(i-_ksize);
+                int startcol(j-_ksize);
+                int endrow(i+_ksize);
+                int endcol(j+_ksize);
                 int B=0;
                 int G=0;
                 int R=0;
@@ -85,19 +87,19 @@ void aveFilter(const Mat& src,Mat& dst,int size)
         }
 }
 
-void medianFilter(const Mat& src,Mat& dst,int size)
+void Solution::medianFilter(const Mat& src,Mat& dst,int _ksize)
 {
-    assert(size%2==1);
-    size=(size-1)/2;
+    assert(_ksize%2==1);
+    _ksize=(_ksize-1)/2;
     for(int i=0;i<src.rows;i++)
         for(int j=0;j<src.cols;j++)
         {
-            if((i-size)>=0&&(j-size)>=0&&(i+size)<src.rows&&(j+size)<src.cols)
+            if((i-_ksize)>=0&&(j-_ksize)>=0&&(i+_ksize)<src.rows&&(j+_ksize)<src.cols)
             {
-                int startrow(i-size);
-                int startcol(j-size);
-                int endrow(i+size);
-                int endcol(j+size);
+                int startrow(i-_ksize);
+                int startcol(j-_ksize);
+                int endrow(i+_ksize);
+                int endcol(j+_ksize);
                 vector<int> B;
                 vector<int> G;
                 vector<int> R;
@@ -122,4 +124,13 @@ void medianFilter(const Mat& src,Mat& dst,int size)
                 dst.at<Vec3b>(i,j)[2]=src.at<Vec3b>(i,j)[2];
             }
         }
+}
+void Solution::grayModify(Mat& src)
+{
+    for_each(src.begin<Vec3b>(),src.end<Vec3b>(),[](auto& it)
+             {
+                 (it)[0]=((it)[0]*30+(it)[1]*59+(it)[2]*11)/100;
+                 (it)[1]=((it)[0]*30+(it)[1]*59+(it)[2]*11)/100;
+                 (it)[2]=((it)[0]*30+(it)[1]*59+(it)[2]*11)/100;
+             });
 }

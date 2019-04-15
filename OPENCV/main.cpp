@@ -2,19 +2,13 @@
 #include"Filter.hpp"
 using namespace std;
 using namespace cv;
-
-
 int main(int argc, char **argv)
 {
-    Mat img = imread("/Users/gerunze/Pictures/YXRR.jpg");
-    Mat img1(img.size(), img.type());
-    Mat img2(img.size(),img.type());
-    salt(img, 6000);
-    pepper(img, 6000);
-    imshow("permitive",img);
-    aveFilter(img, img1, 5);
-    medianFilter(img, img2, 3);
-    imshow("after avefilter",img1);
-    imshow("after medianfilter",img2);
+    Mat lhs=imread("/Users/gerunze/Pictures/timg.jpeg");
+    Mat rhs=imread("/Users/gerunze/Pictures/timg1.jpeg");
+    resize(lhs,lhs,Size(600,400));
+    auto p=make_shared<Solution>();
+    p->grayModify(lhs);
+    imshow("gray", lhs);
     waitKey();
 }
