@@ -5,6 +5,6 @@
 
 ## 效果图
 ---
-![原图](https://github.com/woshigerunze/OpenCV/blob/master/permitive.png)
-![均值滤波](https://github.com/woshigerunze/OpenCV/blob/master/avefilter.png)
-![中值滤波](https://github.com/woshigerunze/OpenCV/blob/master/medianfilter.png)
+![原图](https://github.com/woshigerunze/OpenCV/blob/master/images/permitive.png)
+![均值滤波](https://github.com/woshigerunze/OpenCV/blob/master/images/avefilter.png)
+![中值滤波](https://github.com/woshigerunze/OpenCV/blob/master/images/medianfilter.png)
