@@ -18,23 +18,26 @@
 using namespace cv;
 using namespace std;
 template<typename T>
-T _plus(T _src,T _dst)
+auto _plus(T _src,T _dst)->decltype((_src+_dst))
 {
-    return (_src+_dst)/2;
+    if(_src+_dst>255)return 255;
+    return (_src+_dst);
 }
 template<typename T>
-T _minus(T _src,T _dst)
+auto _minus(T _src,T _dst)->decltype(_src-_dst)
 {
+    if(_src-_dst<0)return 0;
     return _src-_dst;
 }
 template<typename T>
-T _multi(T _src,T _dst)
+auto _multi(T _src,T _dst)->decltype((_src*_dst)%256)
 {
     return (_src*_dst)%256;
 }
 template<typename T>
-T _div(T _src,T _dst)
+auto _div(T _src,T _dst)->decltype(_src/_dst)
 {
+    if(_dst==0)return 0;
     return _src/_dst;
 }
 class Solution
