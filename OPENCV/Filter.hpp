@@ -14,6 +14,7 @@
 #include<opencv2/highgui/highgui.hpp>  // GUI
 #include<opencv2/imgproc/imgproc.hpp>  // 图像处理
 #include<iostream>
+#include<string>
 #include<vector>
 using namespace cv;
 using namespace std;
@@ -24,15 +25,14 @@ auto _plus(T _src,T _dst)->decltype((_src+_dst))
     return (_src+_dst);
 }
 template<typename T>
-auto _minus(T _src,T _dst)->decltype(_src-_dst)
+auto _minus(T _src,T _dst)->decltype(abs(_src-_dst))
 {
-    if(_src-_dst<0)return 0;
-    return _src-_dst;
+    return abs(_src-_dst);
 }
 template<typename T>
-auto _multi(T _src,T _dst)->decltype((_src*_dst)%256)
+auto _multi(T _src,T _dst)->decltype((_src*_dst)%255)
 {
-    return (_src*_dst)%256;
+    return (_src*_dst)%255;
 }
 template<typename T>
 auto _div(T _src,T _dst)->decltype(_src/_dst)
@@ -46,7 +46,7 @@ public:
     template<typename FuncType>
     Mat operate(const Mat& lhs,const Mat& rhs,FuncType f)//图像的四则运算
     {
-        assert(lhs.size()==rhs.size()&&lhs.type()==rhs.type());
+        assert(lhs.size()==rhs.size());
         Mat res(lhs.size(),lhs.type());
         auto lhs_begin=lhs.begin<Vec3b>();
         auto rhs_begin=rhs.begin<Vec3b>();
@@ -60,6 +60,7 @@ public:
                  });
          return res;
     }
+    
     void grayModify(Mat& src);//灰度化
     //void thresHold(Mat& src,int threshold);
     void brightOrdarkModify(Mat& src,double ratio);//图像变亮、变暗
@@ -72,5 +73,8 @@ public:
     void gaussNoise(Mat& src);//高斯噪声
     void aveFilter(const Mat& src,Mat& dst,int _ksize);//均值滤波
     void medianFilter(const Mat& src,Mat& dst,int _ksize);//均值滤波
+    void mergeImages(Mat& dst,vector<Mat>& images,int rows,int cols);
+    Mat  addGuassianNoise(Mat& srcImage);//添加高斯噪声函数
+    double generateGaussianNoise(double mu, double sigma);//生成高斯噪声
 };
 #endif /* Filter_hpp */

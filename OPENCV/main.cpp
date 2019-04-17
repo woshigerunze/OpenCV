@@ -6,9 +6,11 @@ int main(int argc, char **argv)
 {
     Mat lhs=imread("/Users/gerunze/Pictures/timg.jpeg");
     Mat rhs=imread("/Users/gerunze/Pictures/timg1.jpeg");
-    resize(lhs,lhs,rhs.size());
+    resize(lhs,lhs,Size(400,300));
+    resize(rhs,rhs,Size(400,300));
     auto p=make_shared<Solution>();
-    p->negative(lhs);
-    imshow("test", lhs);
+    imshow("1",lhs);
+    lhs=p->addGuassianNoise(lhs);
+    imshow("2",lhs);
     waitKey();
 }
